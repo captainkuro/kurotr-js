@@ -1,0 +1,61 @@
+Referensi Membuat OTR di JavaScript
+===================================
+
+<!-- OTR Stuff -->
+Official Protocol Spec (the only source)
+http://www.cypherpunks.ca/otr/Protocol-v2-3.1.0.html
+
+Advice about implementing OTR
+http://lists.cypherpunks.ca/pipermail/otr-dev/2007-June/000673.html
+
+OTR lib for java
+http://code.google.com/p/otr4j/
+
+<!-- ByteArray -->
+String-to-bytes JS function
+http://stackoverflow.com/questions/1240408/reading-bytes-from-a-javascript-string
+
+jDataView: JS Binary reader
+http://blog.vjeux.com/2011/javascript/jdataview-read-binary-file.html
+
+Performance of Javascript (Binary) Byte Arrays in Modern Browsers
+http://blog.n01se.net/blog-n01se-net-p-248.html
+
+Another JS strings <-> bytes
+http://codereview.stackexchange.com/questions/3569/pack-and-unpack-bytes-to-strings
+
+AMF.js
+http://www.jamesward.com/2010/07/07/amf-js-a-pure-javascript-amf-implementation/
+http://www.adamia.com/blog/high-performance-javascript-port-of-actionscript-byteArray
+
+Byte array in JS, modern browser only (Chrome 7, FF 4, IE 10, Opera 11)
+https://developer.mozilla.org/en/JavaScript_typed_arrays/Uint8Array
+
+JS String Encoding, String <-> Uint8Array
+http://code.google.com/p/stringencoding/
+
+<!-- BigNum -->
+JSBN JavaScript Big Number (mimicking Java BigInteger) + some encryption
+https://github.com/jasondavies/jsbn
+http://docs.oracle.com/javase/1.3/docs/api/java/math/BigInteger.html
+
+BigInteger by Leemon Baird
+http://www.leemon.com/crypto/BigInt.html
+
+<!-- Base64 -->
+Binary Formats in JavaScript: Base64, Deflate, and UTF8
+http://www.codeproject.com/Articles/26980/Binary-Formats-in-JavaScript-Base64-Deflate-and-UT
+
+Online JavaScript encode & decode base64
+http://decodebase64.com/
+
+<!-- DSA -->
+Summary of DSA algorithm
+http://www.codeproject.com/Articles/25590/Cryptographic-Interoperability-Digital-Signatures
+
+This guy is trying to implement DSA in Java
+http://stackoverflow.com/questions/6005178/problem-in-implementing-dsa-in-java-without-cryptography-library
+
+<!-- JavaScript -->
+Run intense JS without freezing the browser
+http://debuggable.com/posts/run-intense-js-without-freezing-the-browser:480f4dd6-f864-4f72-ae16-41cccbdd56cb

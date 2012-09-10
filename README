@@ -1,0 +1,95 @@
+KurOTR.js: JavaScript Implementation of Off-the-Record Messaging
+version 0.5.0
+by Khandar William (khandar.william@sangkuriang.co.id)
+@ Sangkuriang Internasional http://sangkuriang.co.id
+================================================================================
+
+For more information on Off-the-Record Messaging, see
+http://www.cypherpunks.ca/otr/
+
+LIMITATIONS
+-----------
+
+- only supports V2 protocol
+- doesn't support SMP (Socialist Millionaires' Protocol)
+- doesn't support whitespace tag, yet
+- doesn't support fragmentation, yet
+- only support TLV type Padding and Disconnect
+
+THIRD PARTY
+-----------
+
+This library uses several CryptoJS (http://code.google.com/p/crypto-js/) components.
+CryptoJS is released under New BSD License (http://code.google.com/p/crypto-js/wiki/License).
+
+Otr.BigInteger uses JSBN (http://www-cs-students.stanford.edu/~tjw/jsbn/).
+JSBN is released under a BSD license (http://www-cs-students.stanford.edu/~tjw/jsbn/LICENSE).
+
+Otr.Util uses Leemon BigInt.js (http://www.leemon.com/crypto/BigInt.html).
+BigInt.js (c) 2000-2009 Leemon Baird (http://www.leemon.com/).
+
+USAGE
+-----
+
+<!-- To be added -->
+
+REQUIREMENTS
+------------
+components/core.js
+components/cipher-core.js
+components/enc-base64.js
+components/aes.js
+components/mode-ctr.js
+components/pad-nopadding.js
+components/sha256.js
+components/sha1.js
+components/hmac.js
+otr.js
+otr.util.js
+otr.biginteger.js
+otr.type.js
+otr.bytebuffer.js
+otr.message.js
+otr.dsa.js
+otr.auth.js
+
+LICENSE
+-------
+
+KurOTR.js is covered by the following (MIT) license:
+	
+	KurOTR.js
+	Copyright (C) 2012 Khandar William, Sangkuriang Internasional
+
+	Permission is hereby granted, free of charge, to any person obtaining
+	a copy of this software and associated documentation files (the
+	"Software"), to deal in the Software without restriction, including
+	without limitation the rights to use, copy, modify, merge, publish,
+	distribute, sublicense, and/or sell copies of the Software, and to
+	permit persons to whom the Software is furnished to do so, subject to
+	the following conditions:
+
+	The above copyright notice and this permission notice shall be
+	included in all copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+	EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+	MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+	NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+	LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+	OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+	WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+VERSION HISTORY
+---------------
+0.5.0 - 2012-08-30
+version number change LOL
+
+0.1.1 - 2012-08-10
+TLV disconnect is supported
+
+0.1.0 - 2012-07-30
+DH key rotation added, basic functionality runs
+
+0.0.9a - 2012-07-26
+able to do AKE and secure chat but without DH key rotation
