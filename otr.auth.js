@@ -14,6 +14,7 @@
  *            now AKE is success, drafting SessionKeys, drafting KeyManager, working data message, 
  *            dhkey rotation data message
  * 2012-08-02 add produceDisconnectMessage, oldMacKeys draft
+ * 2012-09-17 AKE special case
  */
 
 Otr.Auth = (function () {
@@ -142,6 +143,8 @@ Otr.Auth = (function () {
 			this.secret.biX   = biX;
 			this.secret.mpiR  = new Type.MPI(biR);
 			this.secret.mpiGx = mpiGx;
+
+			this.secret.lastDHCommitMessage = msg;
 			return msg;
 		},
 
@@ -160,10 +163,32 @@ Otr.Auth = (function () {
 				case AUTHSTATE_AWAITING_DHKEY:
 					// It indicates that you have already sent a D-H Commit message to your correspondent, 
 					// but that he either didn't receive it, or just didn't receive it yet, and has sent you one as well
+					// The symmetry will be broken by comparing the hashed gx you sent in your D-H Commit Message with the one you received, 
+					// considered as 32-byte unsigned big-endian values. 
+					var biMyHash = BigInteger.fromMagnitude(1, this.secret.lastDHCommitMessage.dataHashedGx.getValue()),
+						biTheirHash = BigInteger.fromMagnitude(1, msg.dataHashedGx.getValue());
+
+					// If yours is the higher hash value:
+					if (biMyHash.compareTo(biTheirHash) > 0) {
+						// Ignore the incoming D-H Commit message, but resend your D-H Commit message.
+						this.reply = this.secret.lastDHCommitMessage;
+					} else {
+					// Otherwise:
+    					// Forget your old gx value that you sent (encrypted) earlier, and pretend you're in AUTHSTATE_NONE; 
+    					// i.e. reply with a D-H Key Message, and transition authstate to AUTHSTATE_AWAITING_REVEALSIG. 
+    					this.secret.dataEncryptedGx = msg.dataEncryptedGx;
+						this.secret.dataHashedGx = msg.dataHashedGx;
+
+						this.reply = this.produceDHKeyMessage();
+						this.state = AUTHSTATE_AWAITING_REVEALSIG;
+					}
 					break;
 				case AUTHSTATE_AWAITING_REVEALSIG:
 					// Retransmit your D-H Key Message (the same one as you sent when you entered AUTHSTATE_AWAITING_REVEALSIG). 
+					this.reply = this.secret.lastDHKeyMessage;
 					// Forget the old D-H Commit message, and use this new one instead
+					this.secret.dataEncryptedGx = msg.dataEncryptedGx;
+					this.secret.dataHashedGx = msg.dataHashedGx;
 					break;
 			}
 		},
@@ -180,6 +205,7 @@ Otr.Auth = (function () {
 			this.secret.biY   = biY;
 			this.secret.mpiGy = msg.mpiGy;
 
+			this.secret.lastDHKeyMessage = msg;
 			return msg;
 		},
 
@@ -195,9 +221,13 @@ Otr.Auth = (function () {
 					break;
 				case AUTHSTATE_AWAITING_SIG:
 					// If this D-H Key message is the same the one you received earlier (when you entered AUTHSTATE_AWAITING_SIG):
+					if (this.secret.mpiGy.equals(msg.mpiGy)) {
 						// Retransmit your Reveal Signature Message.
+						this.reply = this.lastRevealSignatureMessage;
+					} else {
 					// Otherwise:
 						// Ignore the message. 
+					}
 					break;
 				default:
 					// Ignore the message. 
@@ -337,6 +367,8 @@ Otr.Auth = (function () {
 			msg.dataRevealedKey        = new Type.Data(this.secret.mpiR.getValue());
 			msg.dataEncryptedSignature = dataEncSign;
 			msg.macSignature           = Util.wordArrayToByteArray(waHmac);
+
+			this.secret.lastRevealSignatureMessage = msg;
 			return msg;
 		},
 
