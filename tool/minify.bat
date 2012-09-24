@@ -19,6 +19,7 @@ jsmin.exe > be.js < ..\otr.bytebuffer.js
 jsmin.exe > bf.js < ..\otr.message.js
 jsmin.exe > bg.js < ..\otr.dsa.js
 jsmin.exe > bh.js < ..\otr.auth.js
+jsmin.exe > bi.js < ..\otr.communication.js
 copy /b *.js kurotr-js.min
 del *.js
 
