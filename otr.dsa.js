@@ -21,7 +21,7 @@ Otr.DSA = (function () {
 
 	var BigInteger = Otr.BigInteger,
 		Util = Otr.Util,
-		log = true; // must be FALSE for PRODUCTION
+		log = window && window.location.href.indexOf('http://localhost') !== -1; // must be FALSE for PRODUCTION
 
 	// mimicking System.arraycopy
 	function arraycopy(fromar, fromi, toar, toi, howmany) {

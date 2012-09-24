@@ -14,7 +14,7 @@
  *            now AKE is success, drafting SessionKeys, drafting KeyManager, working data message, 
  *            dhkey rotation data message
  * 2012-08-02 add produceDisconnectMessage, oldMacKeys draft
- * 2012-09-17 AKE special case
+ * 2012-09-17 AKE special case, remove unnecessary parameter
  */
 
 Otr.Auth = (function () {
@@ -69,13 +69,9 @@ Otr.Auth = (function () {
 
 
 	/**
-	 * @param {String} myId my identifier/nickname
-	 * @param {String} targetId chat buddy identifier/nickname
 	 * @param {DSAKey} dsa contain DSA parameters, to be cloned, must already have parameter
 	 */
-	function Auth(myId, targetId, dsa) {
-		this.myId = myId;
-		this.targetId = targetId;
+	function Auth(dsa) {
 		// clone DSA param
 		this.dsa = dsa.clone();
 		// generate DSA key pair

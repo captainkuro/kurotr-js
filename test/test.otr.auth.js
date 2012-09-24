@@ -34,8 +34,8 @@ test('Sample AKE', function () {
 	dsa.p = new Otr.BigInteger(sample.p, 16);
 	dsa.g = new Otr.BigInteger(sample.g, 16);
 	
-	alice = new Otr.Auth('alice', 'bob', dsa);
-	bob = new Otr.Auth('bob', 'alice', dsa);
+	alice = new Otr.Auth(dsa);
+	bob = new Otr.Auth(dsa);
 	// query message
 	start = new Date().getTime();
 	msg = alice.produceQueryMessage();
