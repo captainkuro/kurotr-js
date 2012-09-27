@@ -247,6 +247,106 @@ Otr.DSA = (function () {
 				}
 			}
 			return d;
+		},
+
+		/**
+		 * same as generateParameters but try not blocking the browser during heavy loop by using setTimeout
+		 * @param {Function} progress function to call when this parameter generation makes a progress
+		 * @param {Function} finish function to call when this parameter generation is finished
+		 */
+		generateParametersWithTimeout: function (progress, finish) {
+		// A. Generate P & Q
+			// increment {Array of byte} buf
+			function inc(buf) {
+				var i, b;
+
+				for (i = buf.length - 1; i >= 0; --i) {
+					b = ((buf[i] + 1) & 0xff);
+					buf[i] = b;
+
+					if (b != 0) {
+						break;
+					}
+				}
+			}
+
+			var seed = new Array(20), // random bytes
+				part1, part2, offset, // another random bytes
+				u = new Array(20), // candidate for q
+				i, counter, k, // iterator
+				q, p, // BigInteger
+				n = 6, // (this.L - 1) / 160
+				w = new Array(128), // candidate for p, length is this.L / 8
+				x, c, // BigInteger
+				self = this,
+				loop, loop2; 
+
+			// searching for q
+			loop = function () {
+				self.rand.nextBytes(seed);
+				part1 = self.H(seed);
+				part2 = seed.slice(0);
+				inc(part2);
+				part2 = self.H(part2);
+
+				for (i = 0; i != u.length; i++) {
+					u[i] = part1[i] ^ part2[i];
+				}
+				u[0] |= 0x80;
+				u[19] |= 0x01;
+
+				q = BigInteger.fromMagnitude(1, u);
+
+				if (!q.isProbablePrime(self.certainty)) {
+					// console.log('q is not prime enough');
+					if (progress) progress();
+					return setTimeout(loop, 10); // try again with new q
+				}
+
+				offset = seed.slice(0);
+				inc(offset);
+				counter = 0; // limit for loop2
+
+				// searching for p
+				loop2 = function () {
+					for (k = 0; k < n; k++) {
+						inc(offset);
+						part1 = self.H(offset);
+						arraycopy(part1, 0, w, w.length - (k + 1) * part1.length, part1.length);
+					}
+					inc(offset);
+					part1 = self.H(offset);
+					arraycopy(part1, part1.length - ((w.length - (n) * part1.length)), w, 0, w.length - n * part1.length);
+					w[0] |= 0x80;
+
+					x = BigInteger.fromMagnitude(1, w);
+					c = x.mod(q.shiftLeft(1));
+					p = x.subtract(c.subtract(BigInteger.ONE));
+
+					if (p.bitLength() != self.L) {
+						if (progress) progress();
+						setTimeout(loop2, 50); // continue
+					}
+					if (p.isProbablePrime(self.certainty)) {
+						// we found the p and q
+						self.p = p;
+						self.q = q;
+						// clearInterval(loop);
+						self.g = self._generateG(p, q);
+						if (finish) finish();
+						return;
+					}
+					if (progress) progress();
+					counter++;
+					if (counter < 4000) {
+						setTimeout(loop2, 50); // try max 4000 times searching for p
+					} else {
+						setTimeout(loop, 10); // recalculate q
+					}
+				};
+				loop2();
+			};
+			loop();
 		}
 	};
 
