@@ -8,6 +8,7 @@
  * 2012-07-04 initial commit
  * 2012-07-05 rough parsing, toString
  * 2012-07-10 use ByteBuffer
+ * 2012-11-05 recognize fragmentation
  */
 
 Otr.Message = (function () {
@@ -32,7 +33,10 @@ Otr.Message = (function () {
 			// this is OTR Error Message
 			this.type = Message.MSG_ERROR;
 			this.message = matches[1];
-		} else if (matches = msg.match(/^\?OTR:([a-zA-Z0-9+/]+={0,2})\.$/)) {
+		} else if (matches = msg.match(/^\?OTR,(\d+),(\d+),(.+)\.?,$/)) {
+			this.type = Message.MSG_FRAGMENT;
+			this.message = msg;
+		} else if (matches = msg.match(/^\?OTR:([a-zA-Z0-9+\/]+={0,2})\.$/)) {
 			// message type is taken from content
 			bytebuff = Otr.ByteBuffer.fromBase64(matches[1]);
 			this.version = bytebuff.readShort();
@@ -88,6 +92,7 @@ Otr.Message = (function () {
 	Message.MSG_QUERY = -1;
 	Message.MSG_ERROR = -2;
 	Message.MSG_PLAIN = -3;
+	Message.MSG_FRAGMENT = -4;
 	// specified by protocol:
 	Message.MSG_DH_COMMIT = 0x02;
 	Message.MSG_DH_KEY = 0x0a;

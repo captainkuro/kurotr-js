@@ -66,43 +66,166 @@ Exp.BigInteger = (function () {
 	BigInteger.prototype = {
 		_: null // internal big integer value representation
 		// BigInteger abs() Returns a BigInteger whose value is the absolute value of this BigInteger.
+		abs: function () {
+			if (negative(this._)) {
+				return BigInteger.create(mult(this._, str2bigInt('-1', 10)));
+			} else {
+				return BigInteger.create(dup(this._));
+			}
+		},
 		// BigInteger add(BigInteger val) Returns a BigInteger whose value is (this + val).
+		add: function (val) {
+			return BigInteger.create(add(this._, val._));
+		},
 		// BigInteger and(BigInteger val) Returns a BigInteger whose value is (this & val).
+		and: function (val) {
+
+		},
 		// BigInteger andNot(BigInteger val) Returns a BigInteger whose value is (this & ~val).
+		andNot: function (val) {
+
+		},
 		// int bitCount() Returns the number of bits in the two's complement representation of this BigInteger that differ from its sign bit.
+		bitCount: function () {
+
+		},
 		// int bitLength() Returns the number of bits in the minimal two's-complement representation of this BigInteger, excluding a sign bit.
+		bitLength: function () {
+			return bitSize(this._);
+		},
 		// BigInteger clearBit(int n) Returns a BigInteger whose value is equivalent to this BigInteger with the designated bit cleared.
+		clearBit: function (n) {
+
+		},
+		// BigInteger clone() Returns a copy of this value
+		clone: function () {
+			return BigInteger.create(dup(this._));
+		},
 		// int compareTo(BigInteger val) Compares this BigInteger with the specified BigInteger.
 		// int compareTo(Object o) Compares this BigInteger with the specified Object.
+		compareTo: function (val) {
+
+		},
 		// BigInteger divide(BigInteger val) Returns a BigInteger whose value is (this / val).
+		divide: function (val) {
+
+		},
 		// BigInteger[] divideAndRemainder(BigInteger val) Returns an array of two BigIntegers containing (this / val) followed by (this % val).
+		divideAndRemainder: function (val) {
+
+		},
 		// boolean equals(Object x) Compares this BigInteger with the specified Object for equality.
+		equals: function (x) {
+			if (x instanceof BigInteger) {
+				return equals(this._, x._);
+			} else if (typeof x === 'number') {
+				return equalsInt(this._, x);
+			} else { // Not recognized
+				return false;
+			}
+		},
 		// BigInteger flipBit(int n) Returns a BigInteger whose value is equivalent to this BigInteger with the designated bit flipped.
+		flipBit: function (x) {
+
+		},
 		// BigInteger gcd(BigInteger val) Returns a BigInteger whose value is the greatest common divisor of abs(this) and abs(val).
+		gcd: function (x) {
+			return BigInteger.create(GCD(this._, x._));
+		},
 		// int getLowestSetBit() Returns the index of the rightmost (lowest-order) one bit in this BigInteger (the number of zero bits to the right of the rightmost one bit).
+		getLowestSetBit: function () {
+
+		},
 		// int intValue() Converts this BigInteger to an int.
+		intValue: function () {
+
+		},
 		// boolean isProbablePrime(int certainty) Returns true if this BigInteger is probably prime, false if it's definitely composite.
+		isProbablePrime: function (certainty) {
+
+		},
 		// BigInteger max(BigInteger val) Returns the maximum of this BigInteger and val.
+		max: function (val) {
+
+		},
 		// BigInteger min(BigInteger val) Returns the minimum of this BigInteger and val.
-		// BigInteger mod(BigInteger m) Returns a BigInteger whose value is (this mod m).
+		min: function (val) {
+
+		},
+		// BigInteger mod(BigInteger m) Returns a BigInteger whose value is (this mod m). This method differs from remainder in that it always returns a non-negative BigInteger.
+		mod: function (m) {
+			return BigInteger.create(mod(this._, m._));
+		},
 		// BigInteger modInverse(BigInteger m) Returns a BigInteger whose value is (this^-1 mod m).
+		modInverse: function (m) {
+
+		},
 		// BigInteger modPow(BigInteger exponent, BigInteger m) Returns a BigInteger whose value is (thisexponent mod m).
+		modPow: function (exponent, m) {
+
+		},
 		// BigInteger multiply(BigInteger val) Returns a BigInteger whose value is (this * val).
+		multiply: function (val) {
+			return BigInteger.create(mult(this._, val._));
+		},
 		// BigInteger negate() Returns a BigInteger whose value is (-this).
+		negate: function () {
+
+		},
 		// BigInteger not() Returns a BigInteger whose value is (~this).
+		not: function () {
+
+		},
 		// BigInteger or(BigInteger val) Returns a BigInteger whose value is (this | val).
+		or: function (val) {
+
+		},
 		// BigInteger pow(int exponent) Returns a BigInteger whose value is (thisexponent).
+		pow: function (exponent) {
+
+		},
 		// BigInteger remainder(BigInteger val) Returns a BigInteger whose value is (this % val).
+		remainder: function (val) {
+			// @TODO looks like remainder needs other consideration than mod alone
+			return BigInteger.create(mod(this._, m._));
+		},
 		// BigInteger setBit(int n) Returns a BigInteger whose value is equivalent to this BigInteger with the designated bit set.
+		setBit: function (n) {
+
+		},
 		// BigInteger shiftLeft(int n) Returns a BigInteger whose value is (this << n).
+		shiftLeft: function (n) {
+
+		},
 		// BigInteger shiftRight(int n) Returns a BigInteger whose value is (this >> n).
+		shiftRight: function (n) {
+
+		},
 		// int signum() Returns the signum function of this BigInteger.
+		signum: function () {
+
+		},
 		// BigInteger subtract(BigInteger val) Returns a BigInteger whose value is (this - val).
+		subtract: function () {
+
+		},
 		// boolean testBit(int n) Returns true if and only if the designated bit is set.
+		testBit: function (n) {
+
+		},
 		// byte[] toByteArray() Returns a byte array containing the two's-complement representation of this BigInteger.
-		// String toString() Returns the decimal String representation of this BigInteger.
+		toByteArray: function () {
+
+		},
+		// String toString() Returns the decimal String representation of this BigInteger.		
 		// String toString(int radix) Returns the String representation of this BigInteger in the given radix.
+		toString: function (radix) {
+
+		},
 		// BigInteger xor(BigInteger val) Returns a BigInteger whose value is (this ^ val).
+		xor: function (val) {
+
+		}
 
 		// NOT IMPLEMENTED:
 		// double doubleValue() Converts this BigInteger to a double.

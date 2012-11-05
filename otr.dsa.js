@@ -325,7 +325,7 @@ Otr.DSA = (function () {
 
 					if (p.bitLength() != self.L) {
 						if (progress) progress();
-						setTimeout(loop2, 50); // continue
+						setTimeout(loop2, 20); // continue
 					}
 					if (p.isProbablePrime(self.certainty)) {
 						// we found the p and q
@@ -339,7 +339,7 @@ Otr.DSA = (function () {
 					if (progress) progress();
 					counter++;
 					if (counter < 4000) {
-						setTimeout(loop2, 50); // try max 4000 times searching for p
+						setTimeout(loop2, 20); // try max 4000 times searching for p
 					} else {
 						setTimeout(loop, 10); // recalculate q
 					}

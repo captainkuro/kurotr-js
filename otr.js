@@ -5,7 +5,6 @@
  * 
  * @author Khandar William
  * @namespace Otr
- * @version 0.5.0
  *
  * 2012-07-02 initial commit, some constants
  * 2012-07-19 use MIT license

@@ -7,6 +7,7 @@
  * @namespace Otr
  *
  * 2012-09-21 initial commit
+ * 2012-11-05 fragmentation
  */
 
 Otr.Communication = (function () {
@@ -15,18 +16,23 @@ Otr.Communication = (function () {
 	var Message = Otr.Message;
 
 	/**
-	 * @param {DSA} the DSA key parameters
+	 * @param {DSA|Auth} the DSA key parameters or Auth object
 	 * @param {Function} display function to be called when receiving a message
 	 * @param {Function} send function to be called when sending a message
 	 */
 	function Communication(dsa, display, send) {
-		this.auth = new Otr.Auth(dsa);
+		if (dsa instanceof Otr.Auth) {
+			this.auth = dsa;
+		} else { // dsa instanceof Otr.DSA
+			this.auth = new Otr.Auth(dsa);
+		}
 		this.display = display;
 		this.send = send;
 	}
 
 	Communication.prototype = {
 		whenSecured: null, // one-time use function, called immediately after OTR is established
+		fragments: [],
 
 		/**
 		 * @param {String} text either plaintext or OTR ciphertext
@@ -38,6 +44,16 @@ Otr.Communication = (function () {
 				plaintext;
 			if (msg.type === Message.MSG_PLAIN) {
 				this.display(text, other);
+			} else if (msg.type === Message.MSG_FRAGMENT) {
+				var matches = msg.message.match(/^\?OTR,(\d+),(\d+),(.+)\.?,$/),
+					fragI = matches[1],
+					fragN = matches[2],
+					fragContent = matches[3];
+				this.fragments[parseInt(fragI)-1] = fragContent;
+				if (fragI == fragN) {
+					this.receiveMessage(this.fragments.join(''), other);
+					this.fragments = []; // reset
+				}
 			} else {
 				if (auth.encrypted && msg.type === Message.MSG_DATA) {
 					// decrypt then display

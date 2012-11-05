@@ -1,5 +1,5 @@
 KurOTR.js: JavaScript Implementation of Off-the-Record Messaging
-version 0.5.0
+version 0.5.1
 by Khandar William (khandar.william@sangkuriang.co.id)
 @ Sangkuriang Internasional http://sangkuriang.co.id
 ================================================================================
@@ -13,7 +13,7 @@ LIMITATIONS
 - only supports V2 protocol
 - doesn't support SMP (Socialist Millionaires' Protocol)
 - doesn't support whitespace tag, yet
-- doesn't support fragmentation, yet
+- doesn't support fragmentation, only support receiving fragmentation
 - only support TLV type Padding and Disconnect
 
 THIRD PARTY
@@ -52,6 +52,7 @@ otr.bytebuffer.js
 otr.message.js
 otr.dsa.js
 otr.auth.js
+otr.communication.js
 
 LICENSE
 -------
@@ -82,6 +83,10 @@ KurOTR.js is covered by the following (MIT) license:
 
 VERSION HISTORY
 ---------------
+0.5.1 - 2012-11-05
+new component otr.communication
+can receive fragmentation
+
 0.5.0 - 2012-08-30
 cover all AKE state transitions
 
