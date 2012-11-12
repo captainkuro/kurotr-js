@@ -84,6 +84,32 @@ test('Sample AKE', function () {
 	equal(retrieved, sent,  'Bob sent secure message to Alice: '+(new Date().getTime()-start)+'ms');
 	// ok(true, 'dummy: '+((end-start)/1000)+' s');
 
+	/*
+	sent = 'Alabama2!';
+	msg = alice.produceDataMessage(sent);
+	console.log(msg); // 1
+	retrieved = bob.consumeDataMessage(new Otr.Message(msg.toString()));
+	sent = 'Africa2!';
+	msg = bob.produceDataMessage(sent);
+	console.log(msg); // 2
+	alice.consumeDataMessage(msg);
+	msg = bob.produceDataMessage(sent);
+	console.log(msg); // 3
+	msg = alice.produceDataMessage(sent);
+	console.log(msg);// 4
+	bob.consumeDataMessage(msg);
+	msg = bob.produceDataMessage(sent);
+	console.log(msg);//5
+	alice.consumeDataMessage(msg);
+	msg = bob.produceDataMessage(sent);
+	console.log(msg);//6
+	alice.consumeDataMessage(msg);
+	msg = alice.produceDataMessage(sent);
+	console.log(msg);//7
+	msg = alice.produceDataMessage(sent);
+	console.log(msg);//8
+	*/
+
 	start = new Date().getTime();
 	msg = alice.produceDisconnectMessage();
 	bob.consumeDataMessage(new Otr.Message(msg.toString()));

@@ -83,9 +83,10 @@ KurOTR.js is covered by the following (MIT) license:
 
 VERSION HISTORY
 ---------------
-0.5.1 - 2012-11-05
+0.5.1 - 2012-11-*
 new component otr.communication
 can receive fragmentation
+old mac keys revealed
 
 0.5.0 - 2012-08-30
 cover all AKE state transitions
