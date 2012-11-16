@@ -22,11 +22,9 @@ THIRD PARTY
 This library uses several CryptoJS (http://code.google.com/p/crypto-js/) components.
 CryptoJS is released under New BSD License (http://code.google.com/p/crypto-js/wiki/License).
 
-Otr.BigInteger uses JSBN (http://www-cs-students.stanford.edu/~tjw/jsbn/).
-JSBN is released under a BSD license (http://www-cs-students.stanford.edu/~tjw/jsbn/LICENSE).
-
-Otr.Util uses Leemon BigInt.js (http://www.leemon.com/crypto/BigInt.html).
-BigInt.js (c) 2000-2009 Leemon Baird (http://www.leemon.com/).
+Otr.BigInteger uses Leemon BigInt.js and seedrandom.js.
+BigInt.js (c) 2000-2009 Leemon Baird (http://www.leemon.com/crypto/BigInt.html).
+seedrandom.js (c) 2011 David Bau (http://davidbau.com/archives/2010/01/30/random_seeds_coded_hints_and_quintillions.html).
 
 USAGE
 -----
@@ -87,6 +85,7 @@ VERSION HISTORY
 new component otr.communication
 can receive fragmentation
 old mac keys revealed
+no longer use JSBN
 
 0.5.0 - 2012-08-30
 cover all AKE state transitions
