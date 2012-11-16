@@ -84,7 +84,7 @@ test('Sample AKE', function () {
 	equal(retrieved, sent,  'Bob sent secure message to Alice: '+(new Date().getTime()-start)+'ms');
 	// ok(true, 'dummy: '+((end-start)/1000)+' s');
 
-	/*
+	/**
 	sent = 'Alabama2!';
 	msg = alice.produceDataMessage(sent);
 	console.log(msg); // 1
@@ -108,7 +108,7 @@ test('Sample AKE', function () {
 	console.log(msg);//7
 	msg = alice.produceDataMessage(sent);
 	console.log(msg);//8
-	*/
+	/**/
 
 	start = new Date().getTime();
 	msg = alice.produceDisconnectMessage();

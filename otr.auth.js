@@ -51,7 +51,7 @@ Otr.Auth = (function () {
 	// Generates DH public/private key pair
 	function generateDHKey() {
 		var biX = BigInteger.generate(320), // random 320-bit integer
-			biGx = Util.powMod(DH_G, biX, DH_MOD),//DH_G.modPow(biX, DH_MOD),
+			biGx = DH_G.modPow(biX, DH_MOD),
 			mpiGx = new Type.MPI(biGx);
 		return {
 			biPrivate: biX, // DH private key, BigInteger
@@ -329,8 +329,7 @@ Otr.Auth = (function () {
 			if (biTemp.compareTo(TWO) < 0 || biTemp.compareTo(DH_MOD_MIN_2) > 0) throw new Error('Invalid Gy received');
 
 			// Computes s = (gy)x
-			// biS = this.secret.mpiGy.toBigInteger().modPow(this.secret.biX, DH_MOD); // shared diffie hellman key
-			biS = Util.powMod(this.secret.mpiGy.toBigInteger(), this.secret.biX, DH_MOD); // shared diffie hellman key
+			biS = this.secret.mpiGy.toBigInteger().modPow(this.secret.biX, DH_MOD); // shared diffie hellman key
 			
 			// Computes two AES keys c, c' and four MAC keys m1, m1', m2, m2' by hashing s in various ways
 			waKeys = this._generateAuthKeys(biS);
@@ -419,8 +418,7 @@ Otr.Auth = (function () {
 			if (biGx.compareTo(TWO) < 0 || biGx.compareTo(DH_MOD_MIN_2) > 0) throw new Error('Invalid Gx received');
 
 			// Computes s = (gx)y (note that this will be the same as the value of s Bob calculated)
-			// biS = biGx.modPow(this.secret.biY, DH_MOD); // shared diffie hellman key
-			biS = Util.powMod(biGx, this.secret.biY, DH_MOD); // shared diffie hellman key
+			biS = biGx.modPow(this.secret.biY, DH_MOD); // shared diffie hellman key
 			
 			// Computes two AES keys c, c' and four MAC keys m1, m1', m2, m2' by hashing s in various ways (the same as Bob)
 			waKeys = this._generateAuthKeys(biS);
@@ -719,7 +717,7 @@ Otr.Auth = (function () {
 	// Holds session keys + ctr for specified our DH key pair and their DH public key
 	function SessionKeys(biOurDh, mpiOurY, mpiTheirY) {
 		// Hint: ca.uwaterloo.crysp.otr.crypt.DHSesskeys::computeSession
-		var biS = Util.powMod(mpiTheirY.toBigInteger(), biOurDh, DH_MOD),//mpiTheirY.toBigInteger().modPow(biOurDh, DH_MOD),
+		var biS = mpiTheirY.toBigInteger().modPow(biOurDh, DH_MOD),
 			secbytes = new Type.MPI(biS).toBytes(),
 			sendbyte, recvbyte;
 		

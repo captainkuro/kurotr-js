@@ -17,7 +17,7 @@ function getRandomInt(min, max) {
 }
 
 // because generating dsa params might takes a long time, you might wanna skip this test
-/**
+/**/
 test('Generate Param', function () {
 	var dsa = new Otr.DSA(),
 		start, end;

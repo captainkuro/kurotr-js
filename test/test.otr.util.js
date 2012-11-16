@@ -112,26 +112,6 @@ test('Correcting WordArray Length', function () {
 	equal(w.words.length, 1, '4 bytes = 1 words');
 });
 
-test('powMod', function () {
-	var b1, b2, b3,
-		modpow, powmod, bit, tries = 10;
-
-	while (tries--) {
-		bit = getRandomInt(300, 1000);
-		b1 = Otr.BigInteger.generate(bit-100);
-		b2 = Otr.BigInteger.generate(getRandomInt(300, 400));
-		b3 = Otr.BigInteger.generate(bit);
-		// console.log('b1 '+b1.bitLength());
-		// console.log('b2 '+b2.bitLength());
-		// console.log('b3 '+b3.bitLength());
-		modpow = b1.modPow(b2, b3);
-		powmod = Otr.Util.powMod(b1, b2, b3);
-		// console.log('modpow '+modpow.toString(16));
-		// console.log('powmod '+powmod.toString(16));
-		ok(modpow.compareTo(powmod)===0, 'powMod result the same with modPow');
-	}
-});
-
 /*
 test('which is faster', function () {
 	var bytes = [],

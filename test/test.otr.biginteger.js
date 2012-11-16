@@ -25,7 +25,7 @@ test('Basic Arithmetic', function () {
 	equal(a.toString(), val1, 'a = '+val1);
 	equal(b.toString(), val2, 'b = '+val2);
 	equal(c.toString(), '33333333333333333333333333333333', 'a+b = 33333333333333333333333333333333');
-	equal(c.negate().toString(), '-33333333333333333333333333333333', '-(a+b) = -33333333333333333333333333333333');
+	// equal(c.negate().toString(), '-33333333333333333333333333333333', '-(a+b) = -33333333333333333333333333333333');
 
 	a = new Otr.BigInteger(val1);
 	b = new Otr.BigInteger(val2);

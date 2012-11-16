@@ -21,7 +21,7 @@ Otr.DSA = (function () {
 
 	var BigInteger = Otr.BigInteger,
 		Util = Otr.Util,
-		log = window && window.location.href.indexOf('http://localhost') !== -1; // must be FALSE for PRODUCTION
+		log = false;//window && window.location.href.indexOf('http://localhost') !== -1; // must be FALSE for PRODUCTION
 
 	// mimicking System.arraycopy
 	function arraycopy(fromar, fromi, toar, toi, howmany) {
@@ -37,7 +37,6 @@ Otr.DSA = (function () {
 	DSA.prototype = {
 		// config
 		certainty: 20,
-		rand: new Otr.SecureRandom(),
 		L: 1024, // length of p
 		N: 160, // length of q
 		// SHA1 hash, @param bytes, @return bytes
@@ -79,11 +78,10 @@ Otr.DSA = (function () {
 
 		generateKey: function () {
 			do {
-				this.x = new BigInteger(this.q.bitCount(), this.rand);
+				this.x = new BigInteger(this.q.bitCount());
 			} while ((this.x.compareTo(BigInteger.ZERO) <= 0) || (this.x.compareTo(this.q) >= 0));
 			// while x <= 0 || x >= q
-			// this.y = this.g.modPow(this.x, this.p);
-			this.y = Util.powMod(this.g, this.x, this.p);
+			this.y = this.g.modPow(this.x, this.p);
 		},
 
 		// port from org.bouncycastle.crypto.generators.DSAParametersGenerator
@@ -124,7 +122,7 @@ Otr.DSA = (function () {
 				// debug
 				if (log) console.log('bigloop:'+(++bigloop));
 				
-				this.rand.nextBytes(seed);
+				Util.nextBytes(seed);
 				part1 = this.H(seed);
 				part2 = seed.slice(0);
 				inc(part2);
@@ -142,6 +140,7 @@ Otr.DSA = (function () {
 					// console.log('q is not prime enough');
 					continue; // try again with new q
 				}
+				// q = new BigInteger(this.N, this.certainty);
 
 				offset = seed.slice(0);
 				inc(offset);
@@ -181,12 +180,11 @@ Otr.DSA = (function () {
 				pow = aux.divide(q),
 				gTemp;
 			do {
-				gTemp = new BigInteger(aux.bitLength(), this.rand);
+				gTemp = new BigInteger(aux.bitLength());
 			} while (gTemp.compareTo(aux) >= 0 || gTemp.compareTo(BigInteger.ONE) <= 0);
 			// while (h >= p-1 || h <= 1)
 
-			// return gTemp.modPow(pow, p);
-			return Util.powMod(gTemp, pow, p);
+			return gTemp.modPow(pow, p);
 		},
 
 		// @param {Array} message Array of bytes
@@ -196,12 +194,11 @@ Otr.DSA = (function () {
 
 			// Generate a random per-message value k where 0 < k < q
 			do {
-				k = new BigInteger(this.q.bitLength(), this.rand);
+				k = new BigInteger(this.q.bitLength());
 			} while (k.compareTo(this.q) >= 0 && k.compareTo(BigInteger.ZERO) <= 0);
 			// Calculate r = (g^k mod p) mod q
 			// In the unlikely case that r = 0, start again with a different random k
-			// r = this.g.modPow(k, this.p).mod(this.q);
-			r = Util.powMod(this.g, k, this.p).mod(this.q);
+			r = this.g.modPow(k, this.p).mod(this.q);
 			// Calculate s = (k^−1(H(m) + x*r)) mod q
 			// In the unlikely case that s = 0, start again with a different random k
 			// h = BigInteger.fromMagnitude(1, this.H(message));
@@ -232,8 +229,7 @@ Otr.DSA = (function () {
 			// Calculate u2 = r*w mod q
 			u2 = r.multiply(w).mod(this.q);
 			// Calculate v = ((g^u1*y^u2) mod p) mod q
-			// v = ((this.g.modPow(u1, this.p).multiply(this.y.modPow(u2, this.p))).mod(this.p)).mod(this.q);
-			v = ((Util.powMod(this.g, u1, this.p).multiply(Util.powMod(this.y, u2, this.p))).mod(this.p)).mod(this.q);
+			v = ((this.g.modPow(u1, this.p).multiply(this.y.modPow(u2, this.p))).mod(this.p)).mod(this.q);
 			// The signature is valid if v = r
 			return v.compareTo(r) == 0;
 		},
@@ -283,7 +279,7 @@ Otr.DSA = (function () {
 
 			// searching for q
 			loop = function () {
-				self.rand.nextBytes(seed);
+				Util.nextBytes(seed);
 				part1 = self.H(seed);
 				part2 = seed.slice(0);
 				inc(part2);
