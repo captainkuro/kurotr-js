@@ -26,13 +26,8 @@ Otr.BigInteger uses Leemon BigInt.js and seedrandom.js.
 BigInt.js (c) 2000-2009 Leemon Baird (http://www.leemon.com/crypto/BigInt.html).
 seedrandom.js (c) 2011 David Bau (http://davidbau.com/archives/2010/01/30/random_seeds_coded_hints_and_quintillions.html).
 
-USAGE
------
-
-<!-- To be added -->
-
-REQUIREMENTS
-------------
+COMPONENTS
+----------
 components/core.js
 components/cipher-core.js
 components/enc-base64.js
@@ -51,6 +46,64 @@ otr.message.js
 otr.dsa.js
 otr.auth.js
 otr.communication.js
+
+USAGE
+-----
+
+1. Include the combined script
+	
+	<script src="kurotr-js.min.js" type="text/javascript">
+
+You can use /tool/minify.bat to create the combined script
+
+2. Create a DSA object and generate its parameters
+	
+	var dsa = new Otr.DSA();
+	
+	// the normal way (takes ~10-30 seconds, make browser unresponsive and CPU 100%)
+	dsa.generateParameters();
+	
+	// or, use a pre-generated values (make sure the values are valid)
+	dsa.q = new Otr.BigInteger('ede638a754419345c28b15c1a550c4a9fc04edd5', 16);
+	dsa.p = new Otr.BigInteger('82f6ca41c437402b46179e1a11fd8018ee5b38666fe04859a38a1f6ac9a8da9be7a99cf36a7c610ec0c547d0117dda1c44e66701b4de209030ebd02f1128b2edefe81a3b80299d2462ed657812343617172609f695cd19550b4a17ca2d6dbb407857163b1c8fa00876c843efb70d79b4d843e84c2e39f59b43fc2c7b24deeb57', 16);
+	dsa.g = new Otr.BigInteger('9eefdc5317f7488ebc676ef0c3be6cb2d387d41610181a9171de867ff13aec54008d5632301b8a260ae7cc3a261f41f7f1d8eb87d6e5ddd27073834bbabe6fe8109bed8520b78c038230b1ccde1e1db39ea908a9e6ac5bfe7c3017ae5bc20b493a4a912b5e8b90dc583187c95ffc97c7d66ce8d1b2e2aec071f85505c84670b', 16);
+	
+	// or, the non-blocking method (slower but browser is responsive)
+	var inProgress = function () {
+		// give visual feedback about progress
+	};
+	var whenDone = function () {
+		// what to do when parameter generation is finished
+	};
+	dsa.generateParametersWithTimeout(inProgress, whenDone);
+
+3. Create a Communication object
+
+	var bobReceiveMessage = function (text, other) {
+		// what to do when receiving a message
+		console.log('Bob receive: '+text);
+	};
+	var bobSendMessage = function (text, other) {
+		// how to send a message
+		aliceToBob.receiveMessage(text);
+	};
+	var bobToAlice = new Otr.Communication(dsa, bobReceiveMessage, bobSendMessage);
+
+	var aliceReceiveMessage = function (text, other) {
+		console.log('Alice receive: '+text);
+	};
+	var aliceSendMessage = function (text, other) {
+		bobToAlice.receiveMessage(text);
+	};
+	var aliceToBob = new Otr.Communication(dsa, aliceReceiveMessage, aliceSendMessage);
+
+4. Do some sending and receiving message
+
+	bob.sendMessage('Hello darling');
+	alice.sendMessage('No dinner tonight');
+	
+5. Need documentation? Read the source code.
+For now, this README is the only guide I made.
 
 LICENSE
 -------
