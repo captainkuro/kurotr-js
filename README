@@ -24,7 +24,9 @@ CryptoJS is released under New BSD License (http://code.google.com/p/crypto-js/w
 
 Otr.BigInteger uses Leemon BigInt.js and seedrandom.js.
 BigInt.js (c) 2000-2009 Leemon Baird (http://www.leemon.com/crypto/BigInt.html).
+	BigInt.js is public domain (http://www.leemon.com/crypto/BigInt.js).
 seedrandom.js (c) 2011 David Bau (http://davidbau.com/archives/2010/01/30/random_seeds_coded_hints_and_quintillions.html).
+	seedrandom.js is released under BSD License (http://davidbau.com/encode/seedrandom.js).
 
 COMPONENTS
 ----------

@@ -41,14 +41,3 @@ var Otr = Otr || (function () {
 	
 	return _;
 }());
-
-/* components must be included in the following order:
-- cryptojs components
-- biginteger
-- util
-- type
-- bytebuffer
-- message
-- dsa
-- auth
-*/
