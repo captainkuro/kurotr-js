@@ -16,28 +16,44 @@ function getRandomInt(min, max) {
 module('BigInteger');
 
 test('Basic Arithmetic', function () {
-	var val1 = '11111111111111111111111111111111',
-		val2 = '22222222222222222222222222222222',
-		a = new Otr.BigInteger(val1),
-		b = new Otr.BigInteger(val2),
-		c = a.add(b);
+	var val1 = '123456789123456789123456789123456789',
+		val2 = '94827928173849589482792817384958',
+		x = new Otr.BigInteger(val1),
+		y = new Otr.BigInteger(val2),
+		ans,
+		// precalculated result
+		ansAdd = '123551617051630638712939581940841747',
+		ansSub = '123361961195282939533973996306071831',
+		ansX2 = '15241578780673678546105778311537878046486820281054720515622620750190521',
+		ansX3 = '1881676377434183987554591832242899905854079093020664811051450059946434845350648282631554954480361860897069',
+		ansMul = '11707151531573255618087027604697319172852167652986063566472291579862',
+		ansDiv = '1301',
+		ansMod = '85654569278473206343333705626431';
 
-	equal(a.toString(), val1, 'a = '+val1);
-	equal(b.toString(), val2, 'b = '+val2);
-	equal(c.toString(), '33333333333333333333333333333333', 'a+b = 33333333333333333333333333333333');
-	// equal(c.negate().toString(), '-33333333333333333333333333333333', '-(a+b) = -33333333333333333333333333333333');
+	equal(x.toString(), val1, 'x = '+val1);
+	equal(y.toString(), val2, 'y = '+val2);
 
-	a = new Otr.BigInteger(val1);
-	b = new Otr.BigInteger(val2);
-	c = b.subtract(a);
-	equal(c.toString(), '11111111111111111111111111111111', 'b-a = 11111111111111111111111111111111');
+	ans = x.add(y);
+	equal(ans.toString(), ansAdd, 'x+y='+ansAdd);
 
-	a = new Otr.BigInteger(val1);
-	b = new Otr.BigInteger(val2);
-	c = b.divide(a);
-	equal(c.toString(), '2', 'b/a = 2');
-	equal(b.remainder(a).toString(), '0', 'b%a = 0');
-	equal(a.remainder(b).toString(), val1, 'a%b = '+val1);
+	ans = x.subtract(y);
+	equal(ans.toString(), ansSub, 'x-y='+ansSub);
+	
+	ans = x.multiply(x);
+	equal(ans.toString(), ansX2, 'x^2='+ansX2);
+
+	ans = x.multiply(x).multiply(x);
+	equal(ans.toString(), ansX3, 'x^3='+ansX3);
+
+	ans = x.multiply(y);
+	equal(ans.toString(), ansMul, 'x*y='+ansMul);
+
+	ans = x.divide(y);
+	equal(ans.toString(), ansDiv, 'x/y='+ansDiv);
+
+	ans = x.mod(y);
+	equal(ans.toString(), ansMod, 'x%y='+ansMod);
+
 });
 
 test('Random Generator', function () {
@@ -50,5 +66,3 @@ test('Random Generator', function () {
 	}
 });
 
-// @TODO test more complex operations
-// @TODO test Otr.SecureRandom

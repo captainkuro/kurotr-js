@@ -105,6 +105,7 @@ USAGE
 		alice.sendMessage('No dinner tonight');
 	
 5.  Need documentation? Read the source code.
+	I believe you will only use two components, Otr.DSA and Otr.Communication, so start there.
 	For now, this README is the only guide I made.
 
 LICENSE

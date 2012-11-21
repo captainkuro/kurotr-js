@@ -5,6 +5,9 @@ http://www.leemon.com/crypto/BigInt.html
 With seedrandom.js
 http://davidbau.com/archives/2010/01/30/random_seeds_coded_hints_and_quintillions.html
 
+Also contain a portion of code from otr.js
+https://github.com/arlolra/otr
+
 kurOTR.js BigInteger use:
 BigInteger {
 	new <int>, <int> -> generate probable prime
@@ -94,9 +97,8 @@ Otr.BigInteger = (function () {
 		 * @returns {BigInteger}
 		 */
 		divide: function (val) {
-			var bsize = bitSize(this._),
-				q = str2bigInt('0', 10, bsize),
-				r = str2bigInt('0', 10, bsize);
+			var q = str2bigInt('0', 10, bitSize(this._)),
+				r = str2bigInt('0', 10, bitSize(val._));
 			divide_(this._, val._, q, r);
 			return new BigInteger(q);
 		},
@@ -144,9 +146,8 @@ Otr.BigInteger = (function () {
 		 * @return {BigInteger}
 		 */
 		remainder: function (val) {
-			var bsize = bitSize(this._),
-				q = str2bigInt('0', 10, bsize),
-				r = str2bigInt('0', 10, bsize);
+			var q = str2bigInt('0', 10, bitSize(this._)),
+				r = str2bigInt('0', 10, bitSize(val._));
 			divide_(this._, val._, q, r);
 			return new BigInteger(r);
 		},
