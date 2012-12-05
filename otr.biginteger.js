@@ -556,6 +556,18 @@ Otr.BigInteger = (function () {
 //       Montgomery reduction, but that's obviously wrong.
 ////////////////////////////////////////////////////////////////////////////////////////
 
+// prevent global variable leak
+var bpe, mask, radix,
+digitsStr,
+one, ONE, TWO,
+t,ss, s0, s1, s2, s3, s4, s5, s6, s7, T, sa, 
+mr_x1, mr_r, mr_a,
+eg_v, eg_u, eg_A, eg_B, eg_C, eg_D,
+md_q1, md_q2, md_q3, md_r, md_r1, md_r2, md_tt,
+primes, pows, s_i, s_i2, s_R, s_rm, s_q, s_n1,
+s_a, s_r2, s_n, s_b, s_d, s_x1, s_x2, s_aa,
+rpprb;
+
 //globals
 bpe=0;         //bits stored per array element
 mask=0;        //AND this with an array element to chop it down to bpe bits
@@ -1346,7 +1358,7 @@ function modInt(x,n) {
 //Pad the array with leading zeros so that it has at least minSize elements.
 //There will always be at least one leading 0 element.
 function int2bigInt(t,bits,minSize) {   
-  var i,k;
+  var i,k,buff;
   k=Math.ceil(bits/bpe)+1;
   k=minSize>k ? minSize : k;
   buff=new Array(k);
@@ -1476,7 +1488,7 @@ function bigInt2str(x,base) {
 
 //returns a duplicate of bigInt x
 function dup(x) {
-  var i;
+  var i,buff;
   buff=new Array(x.length);
   copy_(buff,x);
   return buff;
